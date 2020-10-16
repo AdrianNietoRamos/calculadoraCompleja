@@ -32,25 +32,46 @@ public class calculadoraCompleja extends Application {
 	
 	private void onCambiarAction(ActionEvent e) {
 		String operacion = cbOperar.getSelectionModel().getSelectedItem();
-		Complejo aux = new Complejo();
-		
 		switch (operacion) {
 			case "+":
-				aux = complejoA.add(complejoB);
+				result.realProperty().bind(complejoA.realProperty().add(complejoB.realProperty()));
+				result.imaginarioProperty().bind(complejoA.imaginarioProperty().add(complejoB.imaginarioProperty()));
 			break;
 			case "-":
-				aux = complejoA.substract(complejoB);
+				result.realProperty().bind(complejoA.realProperty().subtract(complejoB.realProperty()));
+				result.imaginarioProperty().bind(complejoA.imaginarioProperty().subtract(complejoB.imaginarioProperty()));
 			break;
 			case "*":
-				aux = complejoA.multiply(complejoB);
+				result.realProperty().bind(
+						complejoA.realProperty().multiply(complejoB.realProperty())
+						.subtract(
+						complejoA.imaginarioProperty().multiply(complejoB.imaginarioProperty()))
+						);
+				result.imaginarioProperty().bind(
+						complejoA.realProperty().multiply(complejoB.imaginarioProperty())
+						.add(
+						complejoA.imaginarioProperty().multiply(complejoB.realProperty()))
+						);
 			break;
 			case "/":
-				aux = complejoA.divide(complejoB);
+				result.realProperty().bind(
+						(complejoA.realProperty().multiply(complejoB.realProperty()).add(complejoA.imaginarioProperty().multiply(complejoB.imaginarioProperty())))
+						.divide(
+						(complejoB.realProperty().multiply(complejoB.realProperty())
+								.add(complejoB.imaginarioProperty().multiply(complejoB.imaginarioProperty()))))
+				);
+				
+				result.imaginarioProperty().bind(
+						(complejoA.imaginarioProperty().multiply(complejoB.realProperty()).subtract(complejoA.realProperty().multiply(complejoB.imaginarioProperty())))
+						.divide(
+						(complejoB.realProperty().multiply(complejoB.realProperty())
+								.add(complejoB.imaginarioProperty().multiply(complejoB.imaginarioProperty()))))
+				);
 			break;
 		}
-		result.setReal(aux.getReal());
-		result.setImaginario(aux.getImaginario());
+		
 	}
+
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
