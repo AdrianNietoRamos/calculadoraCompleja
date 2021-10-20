@@ -82,7 +82,7 @@ public class calculadoraCompleja extends Application {
 		
 		Scene scene = new Scene(root, 480, 320);
 
-		primaryStage.setTitle("CambioDivisa");
+		primaryStage.setTitle("Calculadora compleja");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
